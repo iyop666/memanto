@@ -741,6 +741,41 @@ class SdkClient:
             "count": result.get("total_found", 0),
         }
 
+    def recall_recent(
+        self,
+        agent_id: str,
+        limit: int | None = None,
+        type: list[str] | None = None,
+    ) -> dict[str, Any]:
+        """
+        Recall the most recently stored memories (newest first).
+
+        Args:
+            agent_id: Target agent.
+            limit: Max results (defaults to config).
+            type: Optional type filter.
+
+        Returns:
+            Dict with ``memories`` and ``count``.
+        """
+        if limit is None:
+            limit = ConfigManager().get_recall_config()["limit"]
+
+        # Ensure there is a valid, non-expired session for this agent
+        self._get_validated_session_for_agent(agent_id)
+
+        result = self._get_read_service().search_recent(
+            agent_id=agent_id,
+            type=type,
+            limit=limit,
+        )
+
+        return {
+            "agent_id": agent_id,
+            "memories": result.get("results", []),
+            "count": result.get("total_found", 0),
+        }
+
     def answer(
         self,
         agent_id: str,
