@@ -40,7 +40,7 @@ Session 2: /tdd (next day, different terminal)
 > 3. [CONSTRAINT] Database: PostgreSQL Required (90% confidence)
 > 
 > No need to re-explain anything!
-```text
+```
 
 **How it works:**
 
@@ -54,7 +54,7 @@ Session 2: /tdd (next day, different terminal)
 ```bash
 pip install memanto
 export MOORCHEH_API_KEY=your_key  # Free at moorcheh.ai
-```text
+```
 
 Full integration: [PR #534](https://github.com/moorcheh-ai/memanto/pull/534)
 
@@ -67,7 +67,7 @@ Full integration: [PR #534](https://github.com/moorcheh-ai/memanto/pull/534)
 ### Tweet 1:
 I gave my Claude Code skills persistent memory 🧠
 
-Use /grill-with-docs to design architecture → /tdd to implement → zero context re-explaining
+Use /grill-with-docs to design architecture → /tdd to implement → no context re-explaining
 
 Memanto stores your decisions automatically and injects them into the next skill.
 
@@ -115,7 +115,7 @@ Try it: pip install memanto
 
 Full code: https://github.com/moorcheh-ai/memanto/pull/534
 
-#ClaudeAI #DevTools #AI
+`#ClaudeAI` `#DevTools` `#AI`
 
 ### Tweet 6:
 This is the future of AI-assisted development:
@@ -124,7 +124,7 @@ Not just context within a session, but across sessions. Across days. Across team
 
 Your AI should remember your decisions. You shouldn't have to.
 
-#Memanto #ClaudeCode
+`#Memanto` `#ClaudeCode`
 
 ---
 
@@ -191,7 +191,7 @@ This is the future of AI-assisted development: persistent context that survives 
 
 Check out the PR: https://github.com/moorcheh-ai/memanto/pull/534
 
-#AI #DevTools #ClaudeAI #SoftwareEngineering #Productivity
+`#AI` `#DevTools` `#ClaudeAI` `#SoftwareEngineering` `#Productivity`
 
 ---
 

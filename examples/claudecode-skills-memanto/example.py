@@ -82,6 +82,10 @@ def example_tdd():
         for i, mem in enumerate(memories, 1):
             title = mem.get("title", "untitled")
             confidence = mem.get("confidence", 0.0)
+            try:
+                confidence = float(confidence)
+            except (TypeError, ValueError):
+                confidence = 0.0
             content = mem.get("content", "")
             print(f"\n{i}. [{mem.get('type', 'unknown').upper()}] {title}")
             print(f"   Confidence: {confidence*100:.0f}%")

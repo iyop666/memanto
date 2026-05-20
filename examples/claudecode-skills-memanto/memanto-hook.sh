@@ -207,27 +207,38 @@ extract_memories() {
     
     log "Extracting memories from skill: $skill_name"
     
+    # Export variables for Python to read from environment
+    export MEMANTO_SKILL_NAME="$skill_name"
+    export MEMANTO_INTERACTION_SUMMARY="$interaction_summary"
+
     # Use Python to extract and store memories
-    python3 << PYTHON
+    python3 << 'PYTHON'
 import os
 import sys
 import json
 
 try:
     from memanto import MemantoClient
-    
-    client = MemantoClient(
-        api_key="${MOORCHEH_API_KEY}",
-        agent_id="${MEMANTO_AGENT_ID}",
-        scope_type="${MEMANTO_SCOPE_TYPE}",
-        scope_id="${MEMANTO_SCOPE_ID}"
-    )
-    
-    # Build extraction prompt
-    extraction_prompt = """Analyze this skill execution and extract key memories:
 
-Skill: ${skill_name}
-Interaction: ${interaction_summary}
+    api_key = os.environ.get("MOORCHEH_API_KEY", "")
+    agent_id = os.environ.get("MEMANTO_AGENT_ID", "claudecode-engineer")
+    scope_type = os.environ.get("MEMANTO_SCOPE_TYPE", "project")
+    scope_id = os.environ.get("MEMANTO_SCOPE_ID", "")
+    skill_name = os.environ.get("MEMANTO_SKILL_NAME", "unknown")
+    interaction_summary = os.environ.get("MEMANTO_INTERACTION_SUMMARY", "")
+
+    client = MemantoClient(
+        api_key=api_key,
+        agent_id=agent_id,
+        scope_type=scope_type,
+        scope_id=scope_id
+    )
+
+    # Build extraction prompt
+    extraction_prompt = f"""Analyze this skill execution and extract key memories:
+
+Skill: {skill_name}
+Interaction: {interaction_summary}
 
 Extract:
 1. Architectural decisions made
@@ -244,24 +255,24 @@ Format as JSON array of memories, each with:
 - tags: array of relevant tags
 - confidence: 0.0-1.0
 """
-    
+
     # Extract memories using Memanto's LLM
     memories = client.extract_memories(
         prompt=extraction_prompt,
         source=skill_name
     )
-    
+
     if memories:
-        print(f"\\n💾 Stored {len(memories)} memories:")
+        print(f"\n💾 Stored {len(memories)} memories:")
         for mem in memories:
             print(f"  • [{mem['type']}] {mem['title']}")
     else:
-        print("\\n💾 No memories extracted.")
-        
+        print("\n💾 No memories extracted.")
+
 except ImportError:
-    print("\\n⚠️  Memanto not installed. Run: pip install memanto")
+    print("\n⚠️  Memanto not installed. Run: pip install memanto")
 except Exception as e:
-    print(f"\\n⚠️  Memory extraction failed: {e}", file=sys.stderr)
+    print(f"\n⚠️  Memory extraction failed: {e}", file=sys.stderr)
 PYTHON
 }
 

@@ -57,7 +57,7 @@ When using [mattpocock/skills](https://github.com/mattpocock/skills), each skill
                     │ • Cross-session │
                     │ • Auto-extract  │
                     └─────────────────┘
-```bash
+```
 
 ## Quick Start
 
@@ -84,7 +84,7 @@ cp .env.example .env
 
 Add to your `~/.claude/settings.json`:
 
-```json
+```
 {
   "hooks": {
     "pre_skill": ["bash memanto-hook.sh pre"],
@@ -165,7 +165,7 @@ Memanto stores 13 types of memories:
 
 ### Memory Stored (after `/grill-with-docs`)
 
-```json
+```
 {
   "type": "decision",
   "title": "Architecture: Hexagonal with CQRS",
