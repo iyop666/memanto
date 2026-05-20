@@ -58,7 +58,10 @@ def example_grill_with_docs():
             confidence=decision["confidence"],
             source="grill-with-docs",
         )
-        print(f"  ✓ Stored: {decision['title']}")
+        if result:
+            print(f"  ✓ Stored: {decision['title']}")
+        else:
+            print(f"  ✗ Failed to store: {decision['title']}")
     
     print()
 
@@ -77,9 +80,12 @@ def example_tdd():
     if memories:
         print("\nFound relevant memories:")
         for i, mem in enumerate(memories, 1):
-            print(f"\n{i}. [{mem['type'].upper()}] {mem['title']}")
-            print(f"   Confidence: {mem['confidence']*100:.0f}%")
-            print(f"   {mem['content'][:100]}...")
+            title = mem.get("title", "untitled")
+            confidence = mem.get("confidence", 0.0)
+            content = mem.get("content", "")
+            print(f"\n{i}. [{mem.get('type', 'unknown').upper()}] {title}")
+            print(f"   Confidence: {confidence*100:.0f}%")
+            print(f"   {content[:100]}...")
     else:
         print("No memories found.")
     
@@ -112,7 +118,7 @@ def main():
     
     # Check for API key
     if not os.getenv("MOORCHEH_API_KEY"):
-        print("⚠️  MOORCHEH_API_KEY not set.")
+        print("Warning: MOORCHEH_API_KEY not set.")
         print("   Get your free key at https://moorcheh.ai")
         print("   Then set: export MOORCHEH_API_KEY=your_key")
         print()

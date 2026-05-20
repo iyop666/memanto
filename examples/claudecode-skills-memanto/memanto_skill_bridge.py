@@ -269,13 +269,23 @@ Return as JSON array of memories, each with:
         if not memories:
             return ""
         
-        lines = ["📋 Relevant Memories:"]
+        lines = ["Relevant Memories:"]
         for i, mem in enumerate(memories, 1):
-            lines.append(f"\n{i}. [{mem['type'].upper()}] {mem['title']}")
-            lines.append(f"   Confidence: {mem['confidence']*100:.0f}% | Source: {mem.get('source', 'unknown')}")
+            mem_type = mem.get("type", "unknown").upper()
+            title = mem.get("title", "untitled")
+            confidence = mem.get("confidence", 0.0)
+            source = mem.get("source", "unknown")
+            content = mem.get("content", "")
+            
+            try:
+                confidence_pct = float(confidence) * 100
+            except (TypeError, ValueError):
+                confidence_pct = 0.0
+            
+            lines.append(f"\n{i}. [{mem_type}] {title}")
+            lines.append(f"   Confidence: {confidence_pct:.0f}% | Source: {source}")
             
             # Truncate content
-            content = mem['content']
             if len(content) > 200:
                 content = content[:200] + "..."
             lines.append(f"   {content}")

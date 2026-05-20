@@ -30,7 +30,7 @@ When using [mattpocock/skills](https://github.com/mattpocock/skills), each skill
 
 ## Architecture
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                    Claude Code Session                       │
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐       │
@@ -57,7 +57,7 @@ When using [mattpocock/skills](https://github.com/mattpocock/skills), each skill
                     │ • Cross-session │
                     │ • Auto-extract  │
                     └─────────────────┘
-```
+```bash
 
 ## Quick Start
 
@@ -78,7 +78,7 @@ cd memanto/examples/claudecode-skills-memanto
 # Configure
 cp .env.example .env
 # Edit .env and add your MOORCHEH_API_KEY
-```
+```bash
 
 ### 3. Activate the Hook
 
@@ -91,14 +91,14 @@ Add to your `~/.claude/settings.json`:
     "post_skill": ["bash memanto-hook.sh post"]
   }
 }
-```
+```bash
 
 Or copy the hook to your skills directory:
 
 ```bash
 cp memanto-hook.sh ~/.claude/skills/
 chmod +x ~/.claude/skills/memanto-hook.sh
-```
+```bash
 
 ### 4. Use Skills Normally
 
@@ -111,7 +111,7 @@ chmod +x ~/.claude/skills/memanto-hook.sh
 /tdd
 # → Memanto injects: "Previous decision: hexagonal architecture with PostgreSQL write model"
 # → No need to re-explain!
-```
+```bash
 
 ## How It Works
 
@@ -174,11 +174,11 @@ Memanto stores 13 types of memories:
   "confidence": 0.95,
   "source": "grill-with-docs"
 }
-```
+```bash
 
 ### Memory Retrieved (before `/tdd`)
 
-```
+```bash
 📋 Relevant Memories (3 found):
 
 1. [DECISION] Architecture: Hexagonal with CQRS
@@ -192,7 +192,7 @@ Memanto stores 13 types of memories:
 3. [CONSTRAINT] Database: PostgreSQL Required
    Confidence: 90% | Source: project config
    "Must use PostgreSQL for all write operations..."
-```
+```bash
 
 ## Configuration
 
@@ -208,7 +208,7 @@ MEMANTO_SCOPE_TYPE=project              # Memory scope (project/global)
 MEMANTO_SCOPE_ID=my-project             # Project-specific scope
 MEMANTO_CONFIDENCE_THRESHOLD=0.7        # Min confidence for injection
 MEMANTO_MAX_MEMORIES=5                  # Max memories to inject
-```
+```bash
 
 ### Customizing Extraction
 
@@ -222,7 +222,7 @@ EXTRACTION_PROMPT="Extract the following from this interaction:
 3. Framework or library choices
 4. Codebase patterns discovered
 5. Open questions or TODOs"
-```
+```bash
 
 ## Advanced Usage
 
@@ -236,7 +236,7 @@ MEMANTO_SCOPE_ID=project-a
 
 # Project B  
 MEMANTO_SCOPE_ID=project-b
-```
+```bash
 
 ### Team Sharing
 
@@ -245,7 +245,7 @@ Share memories across a team:
 ```bash
 MEMANTO_SCOPE_TYPE=team
 MEMANTO_SCOPE_ID=my-team
-```
+```bash
 
 ### Memory Cleanup
 
@@ -255,7 +255,7 @@ python -c "from memanto import MemantoClient; c = MemantoClient(); print(c.list_
 
 # Delete old memories
 python -c "from memanto import MemantoClient; c = MemantoClient(); c.cleanup(days=30)"
-```
+```bash
 
 ## Comparison
 

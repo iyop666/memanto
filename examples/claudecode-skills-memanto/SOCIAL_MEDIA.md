@@ -27,7 +27,7 @@ Here's what happens:
 
 **Demo:**
 
-```
+```text
 Session 1: /grill-with-docs
 > "Let's discuss the ordering module architecture..."
 > [Decides: Hexagonal + CQRS, PostgreSQL write model, Elasticsearch reads]
@@ -40,7 +40,7 @@ Session 2: /tdd (next day, different terminal)
 > 3. [CONSTRAINT] Database: PostgreSQL Required (90% confidence)
 > 
 > No need to re-explain anything!
-```
+```text
 
 **How it works:**
 
@@ -54,7 +54,7 @@ Session 2: /tdd (next day, different terminal)
 ```bash
 pip install memanto
 export MOORCHEH_API_KEY=your_key  # Free at moorcheh.ai
-```
+```text
 
 Full integration: [PR #534](https://github.com/moorcheh-ai/memanto/pull/534)
 

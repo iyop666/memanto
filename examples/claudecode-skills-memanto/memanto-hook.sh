@@ -127,8 +127,13 @@ query_memories() {
             ;;
     esac
     
+    # Export variables for Python to read from environment
+    export MEMANTO_QUERY="$query"
+    export MEMANTO_FILE_CONTEXT="$file_context"
+    export MEMANTO_SKILL_NAME="$skill_name"
+    
     # Use Python to query Memanto
-    python3 << PYTHON
+    python3 << 'PYTHON'
 import os
 import sys
 import json
@@ -136,35 +141,58 @@ import json
 try:
     from memanto import MemantoClient
     
+    api_key = os.environ.get("MOORCHEH_API_KEY", "")
+    agent_id = os.environ.get("MEMANTO_AGENT_ID", "claudecode-engineer")
+    scope_type = os.environ.get("MEMANTO_SCOPE_TYPE", "project")
+    scope_id = os.environ.get("MEMANTO_SCOPE_ID", "")
+    max_memories = int(os.environ.get("MEMANTO_MAX_MEMORIES", "5"))
+    confidence_threshold = float(os.environ.get("MEMANTO_CONFIDENCE_THRESHOLD", "0.7"))
+    query = os.environ.get("MEMANTO_QUERY", "")
+    file_context = os.environ.get("MEMANTO_FILE_CONTEXT", "")
+    
+    full_query = f"{query} {file_context}".strip()
+    
     client = MemantoClient(
-        api_key="${MOORCHEH_API_KEY}",
-        agent_id="${MEMANTO_AGENT_ID}",
-        scope_type="${MEMANTO_SCOPE_TYPE}",
-        scope_id="${MEMANTO_SCOPE_ID}"
+        api_key=api_key,
+        agent_id=agent_id,
+        scope_type=scope_type,
+        scope_id=scope_id
     )
     
     # Query for relevant memories
     memories = client.query(
-        query="${query} ${file_context}",
-        limit=${MEMANTO_MAX_MEMORIES},
-        min_confidence=${MEMANTO_CONFIDENCE_THRESHOLD}
+        query=full_query,
+        limit=max_memories,
+        min_confidence=confidence_threshold
     )
     
     if memories:
-        print("\\n📋 Relevant Memories:")
+        print("\nRelevant Memories:")
         for i, mem in enumerate(memories, 1):
-            print(f"\\n{i}. [{mem['type'].upper()}] {mem['title']}")
-            print(f"   Confidence: {mem['confidence']*100:.0f}% | Source: {mem.get('source', 'unknown')}")
+            mem_type = mem.get("type", "unknown").upper()
+            title = mem.get("title", "untitled")
+            confidence = mem.get("confidence", 0.0)
+            source = mem.get("source", "unknown")
+            content = mem.get("content", "")
+            
+            try:
+                confidence_pct = float(confidence) * 100
+            except (TypeError, ValueError):
+                confidence_pct = 0.0
+            
+            print(f"\n{i}. [{mem_type}] {title}")
+            print(f"   Confidence: {confidence_pct:.0f}% | Source: {source}")
             # Truncate content for context injection
-            content = mem['content'][:200] + "..." if len(mem['content']) > 200 else mem['content']
+            if len(content) > 200:
+                content = content[:200] + "..."
             print(f"   {content}")
     else:
-        print("\\n📋 No relevant memories found.")
+        print("\nNo relevant memories found.")
         
 except ImportError:
-    print("\\n⚠️  Memanto not installed. Run: pip install memanto")
+    print("\nWarning: Memanto not installed. Run: pip install memanto")
 except Exception as e:
-    print(f"\\n⚠️  Memory query failed: {e}", file=sys.stderr)
+    print(f"\nWarning: Memory query failed: {e}", file=sys.stderr)
 PYTHON
 }
 
